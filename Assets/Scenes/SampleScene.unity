@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 290309990}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Flag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 949031921}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -668,7 +668,7 @@ GameObject:
   - component: {fileID: 1279070984}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: Box
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -785,12 +785,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5751f126c4a914344b10784ca0431af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 10
+  gridSize: 4
   maxFlags: 6
   maxObstaclePercentage: 0.5
   obstacle: {fileID: 949031923}
   box: {fileID: 1279070986}
   flag: {fileID: 290309992}
+  gridPoints: []
   obstacleParent: {fileID: 902773862}
   boxParent: {fileID: 454396542}
   flagParent: {fileID: 2147098996}
