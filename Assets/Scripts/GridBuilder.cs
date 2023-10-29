@@ -108,7 +108,6 @@ public class GridBuilder : MonoBehaviour
     }
 
     //Point Container
-    [System.Serializable]
     public struct Point
     {
         public Vector2 position;
@@ -134,38 +133,38 @@ public class GridBuilder : MonoBehaviour
             Transform o3 = o;
             Transform o4 = o;
             //Y for left-right and X for up-down
-            if (pC.position.y <= offsetPosition)
+            if (pC.position.y  < offsetPosition)
             {
                 pR = gridPoints[i + 1];
-                o1 = Instantiate(box, new Vector3(pR.position.x, 0, pR.position.y), Quaternion.identity, boxParent);
+                o1 = Instantiate(obstacle, new Vector3(pR.position.x, 0, pR.position.y), Quaternion.identity, boxParent);
                 o1.GetComponent<Renderer>().material.color = Color.red;
             }
-            if (pC.position.y >= -offsetPosition)
+            if (pC.position.y > -offsetPosition)
             {
                 pL = gridPoints[i - 1];
-                o2 = Instantiate(box, new Vector3(pL.position.x, 0, pL.position.y), Quaternion.identity, boxParent);
+                o2 = Instantiate(obstacle, new Vector3(pL.position.x, 0, pL.position.y), Quaternion.identity, boxParent);
                 o2.GetComponent<Renderer>().material.color = Color.red;
             }
-            if (pC.position.x >= -offsetPosition)
+            if (pC.position.x > -offsetPosition)
             {
                 pU = gridPoints[i - gridSize];
-                o3 = Instantiate(box, new Vector3(pU.position.x, 0, pU.position.y), Quaternion.identity, boxParent);
+                o3 = Instantiate(obstacle, new Vector3(pU.position.x, 0, pU.position.y), Quaternion.identity, boxParent);
                 o3.GetComponent<Renderer>().material.color = Color.red;
             }
-            if (pC.position.x <= offsetPosition)
+            if (pC.position.x < offsetPosition)
             {
                 pD = gridPoints[i + gridSize];
-                o4 = Instantiate(box, new Vector3(pD.position.x, 0, pD.position.y), Quaternion.identity, boxParent);
+                o4 = Instantiate(obstacle, new Vector3(pD.position.x, 0, pD.position.y), Quaternion.identity, boxParent);
                 o4.GetComponent<Renderer>().material.color = Color.red;
             }
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
 
-            Destroy(o);
-            Destroy(o1);
-            Destroy(o2);
-            Destroy(o3);
-            Destroy(o4);
+            Destroy(o.gameObject);
+            Destroy(o1.gameObject);
+            Destroy(o2.gameObject);
+            Destroy(o3.gameObject);
+            Destroy(o4.gameObject);
         }
     }
 
