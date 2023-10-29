@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro.EditorUtilities;
 using UnityEngine;
 
 public class GridBuilder : MonoBehaviour
@@ -8,7 +9,7 @@ public class GridBuilder : MonoBehaviour
     [Header("Settings")]
     [Range(3, 10)]
     public int gridSize = 3;
-    [Range(1, 6)]
+    [Range(1, 10)]
     public int maxFlags;
     [Range(0, 0.5f)]
     public float maxObstaclePercentage = 0.2f;
@@ -18,6 +19,7 @@ public class GridBuilder : MonoBehaviour
     public Transform obstacle;
     public Transform box;
     public Transform flag;
+    public Transform floor;
 
     //Caching
     public Point[] gridPoints;
@@ -51,6 +53,7 @@ public class GridBuilder : MonoBehaviour
         flags = new Transform[maxFlags];
         maxObstacle = (int)(gridSize * gridSize * Random.Range(0.3f, maxObstaclePercentage));
         obstacles = new Transform[maxObstacle];
+        floor.localScale = Vector3.one * gridSize;
 
 
         //Creating Grid Points
@@ -64,7 +67,6 @@ public class GridBuilder : MonoBehaviour
             }
         }
 
-        /*
         //Spawing Obstacle Items
         for (int i = 0; i < maxObstacle; i++)
         {
@@ -75,16 +77,16 @@ public class GridBuilder : MonoBehaviour
                 int p = Random.Range(0, gridPoints.Length - 1);
                 if (gridPoints[p].obj == null)
                 {
-                    obstacles[i].position = new Vector3(gridPoints[p].position.x, 0, gridPoints[p].position.y);
+                    obstacles[i].position = new Vector3(gridPoints[p].position.x, -0.35f, gridPoints[p].position.y);
                     gridPoints[p].obj = obstacles[i];
                     objPlacedDone = true;
                 }
             }
-        }*/
+        }
 
-        StartCoroutine(CheckNeighbourGridCell());
+        CheckNeighbourGridCell();
 
-        /*
+        
         //Spawing Box and Flags Items
         for (int i = 0; i < maxFlags; i++)
         {
@@ -96,15 +98,15 @@ public class GridBuilder : MonoBehaviour
             while (!objPlacedDone)
             {
                 int p = Random.Range(0, gridPoints.Length - 1);
-                if (gridPoints[p].obj == null)
+                if (gridPoints[p].isValid)
                 {
                     boxes[i].position = new Vector3(gridPoints[p].position.x, 0, gridPoints[p].position.y);
-                    flags[i].position = new Vector3(gridPoints[p].position.x, -0.3f, gridPoints[p].position.y);
+                    flags[i].position = new Vector3(gridPoints[p].position.x, -0.48f, gridPoints[p].position.y);
                     gridPoints[p].obj = boxes[i];
                     objPlacedDone = true;
                 }
             }
-        }*/
+        }
     }
 
     //Point Container
@@ -112,69 +114,58 @@ public class GridBuilder : MonoBehaviour
     {
         public Vector2 position;
         public Transform obj;
+        public bool isValid;
     }
 
-    IEnumerator CheckNeighbourGridCell()
+    //Check for neighbour cell and Set Current cell to valid if it can move
+    void CheckNeighbourGridCell()
     {
-        for (int i = 0; i < gridPoints.Length; i++)
-        {
-            print(i);
-            yield return new WaitForSeconds(0.2f);
-            Point pC = gridPoints[i]; //center point
-            Point pR; //Right point
-            Point pL; //Left point
-            Point pU; //Up point
-            Point pD; //Down point
+        for (int i = 0; i < gridPoints.Length; i++)        {
 
-            Transform o = Instantiate(box, new Vector3(pC.position.x, 0, pC.position.y), Quaternion.identity, boxParent);
-            o.GetComponent<Renderer>().material.color = Color.green;
-            Transform o1 = o;
-            Transform o2 = o;
-            Transform o3 = o;
-            Transform o4 = o;
-            //Y for left-right and X for up-down
-            if (pC.position.y  < offsetPosition)
+            if (gridPoints[i].obj == null)
             {
-                pR = gridPoints[i + 1];
-                o1 = Instantiate(obstacle, new Vector3(pR.position.x, 0, pR.position.y), Quaternion.identity, boxParent);
-                o1.GetComponent<Renderer>().material.color = Color.red;
-            }
-            if (pC.position.y > -offsetPosition)
-            {
-                pL = gridPoints[i - 1];
-                o2 = Instantiate(obstacle, new Vector3(pL.position.x, 0, pL.position.y), Quaternion.identity, boxParent);
-                o2.GetComponent<Renderer>().material.color = Color.red;
-            }
-            if (pC.position.x > -offsetPosition)
-            {
-                pU = gridPoints[i - gridSize];
-                o3 = Instantiate(obstacle, new Vector3(pU.position.x, 0, pU.position.y), Quaternion.identity, boxParent);
-                o3.GetComponent<Renderer>().material.color = Color.red;
-            }
-            if (pC.position.x < offsetPosition)
-            {
-                pD = gridPoints[i + gridSize];
-                o4 = Instantiate(obstacle, new Vector3(pD.position.x, 0, pD.position.y), Quaternion.identity, boxParent);
-                o4.GetComponent<Renderer>().material.color = Color.red;
-            }
 
-            yield return new WaitForSeconds(0.3f);
+                Point pC = gridPoints[i]; //center point
 
-            Destroy(o.gameObject);
-            Destroy(o1.gameObject);
-            Destroy(o2.gameObject);
-            Destroy(o3.gameObject);
-            Destroy(o4.gameObject);
+                int ways = 0;
+
+                //Y for left-right and X for up-down
+                if (pC.position.y < offsetPosition)
+                {
+                    Point pR = gridPoints[i + 1];
+                    if (pR.obj == null) { ways++; }
+                }
+
+                if (pC.position.y > -offsetPosition)
+                {
+                    Point pL = gridPoints[i - 1];
+                    if (pL.obj == null) { ways++; }
+                }
+
+                if (pC.position.x > -offsetPosition)
+                {
+                    Point pU = gridPoints[i - gridSize];
+                    if (pU.obj == null) { ways++; }
+                }
+
+                if (pC.position.x < offsetPosition)
+                {
+                    Point pD = gridPoints[i + gridSize];
+                    if (pD.obj == null) { ways++; }
+                }
+                if(ways > 0) { gridPoints[i].isValid = true; }
+                //print($"P:{i}, W:{ways}, VAILD:{gridPoints[i].isVaild}");
+            }
         }
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.red;
         if (gridPoints != null)
         {
             foreach (Point point in gridPoints)
             {
+                Gizmos.color = Color.red;
                 Gizmos.DrawWireSphere(new Vector3(point.position.x, 0, point.position.y), 0.1f);
             }
         }
