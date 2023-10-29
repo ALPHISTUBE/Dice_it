@@ -801,7 +801,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 4
-  maxFlags: 1
+  maxFlags: 3
   maxObstaclePercentage: 0.5
   obstacle: {fileID: 949031923}
   box: {fileID: 1279070986}

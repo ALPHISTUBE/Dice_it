@@ -29,9 +29,10 @@ public class BoxMovement : MonoBehaviour
                 GridBuilder.Point pR = gridBuilder.gridPoints[gridIndex + 1];
                 if(pR.isValid)
                 {
-                    transform.position = new Vector3(0, transform.position.z, 1);
+                    transform.position += new Vector3(0, 0, 1);
                     gridBuilder.gridPoints[gridIndex].obj = null;
                     gridBuilder.gridPoints[gridIndex + 1].obj = this.transform;
+                    gridIndex++;
                 }
             }
         }
@@ -42,9 +43,10 @@ public class BoxMovement : MonoBehaviour
                 GridBuilder.Point pL = gridBuilder.gridPoints[gridIndex - 1];
                 if (pL.isValid)
                 {
-                    transform.position = new Vector3(0, transform.position.z, -1);
+                    transform.position += new Vector3(0, 0, -1);
                     gridBuilder.gridPoints[gridIndex].obj = null;
                     gridBuilder.gridPoints[gridIndex - 1].obj = this.transform;
+                    gridIndex--;
                 }
             }
         }
@@ -55,9 +57,10 @@ public class BoxMovement : MonoBehaviour
                 GridBuilder.Point pU = gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize];
                 if (pU.isValid)
                 {
-                    transform.position = new Vector3(-1, transform.position.z, 0);
+                    transform.position += new Vector3(-1, 0, 0);
                     gridBuilder.gridPoints[gridIndex].obj = null;
                     gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize].obj = this.transform;
+                    gridIndex -= gridBuilder.gridSize;
                 }
             }
         }
@@ -68,9 +71,10 @@ public class BoxMovement : MonoBehaviour
                 GridBuilder.Point pD = gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize];
                 if (pD.isValid)
                 {
-                    transform.position = new Vector3(1, transform.position.z, 0);
+                    transform.position += new Vector3(1, 0, 0);
                     gridBuilder.gridPoints[gridIndex].obj = null;
                     gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize].obj = this.transform;
+                    gridIndex += gridBuilder.gridSize;
                 }
             }
         }
