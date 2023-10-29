@@ -666,6 +666,7 @@ GameObject:
   - component: {fileID: 1279070986}
   - component: {fileID: 1279070985}
   - component: {fileID: 1279070984}
+  - component: {fileID: 1279070987}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Box
@@ -738,6 +739,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1279070987
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1279070982}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c90c096f555ec9341b257f5541edf08f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridIndex: 0
 --- !u!1 &1420477831
 GameObject:
   m_ObjectHideFlags: 0
@@ -786,13 +800,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5751f126c4a914344b10784ca0431af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 10
-  maxFlags: 10
+  gridSize: 4
+  maxFlags: 1
   maxObstaclePercentage: 0.5
   obstacle: {fileID: 949031923}
   box: {fileID: 1279070986}
   flag: {fileID: 290309992}
   floor: {fileID: 1878779942}
+  offsetPosition: 0
   obstacleParent: {fileID: 902773862}
   boxParent: {fileID: 454396542}
   flagParent: {fileID: 2147098996}

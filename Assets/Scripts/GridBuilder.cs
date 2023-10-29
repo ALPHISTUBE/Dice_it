@@ -23,7 +23,7 @@ public class GridBuilder : MonoBehaviour
 
     //Caching
     public Point[] gridPoints;
-    private float offsetPosition;
+    [HideInInspector] public float offsetPosition;
     private Transform[] boxes;
     private int maxObstacle;
     private Transform[] obstacles;
@@ -34,6 +34,15 @@ public class GridBuilder : MonoBehaviour
     public Transform obstacleParent;
     public Transform boxParent;
     public Transform flagParent;
+
+    //Instance
+    public static GridBuilder instance;
+
+    private void Awake()
+    {
+        instance = this;   
+    }
+
 
     void Start()
     {
@@ -85,7 +94,6 @@ public class GridBuilder : MonoBehaviour
         }
 
         CheckNeighbourGridCell();
-
         
         //Spawing Box and Flags Items
         for (int i = 0; i < maxFlags; i++)
@@ -98,9 +106,10 @@ public class GridBuilder : MonoBehaviour
             while (!objPlacedDone)
             {
                 int p = Random.Range(0, gridPoints.Length - 1);
-                if (gridPoints[p].isValid)
+                if (gridPoints[p].isValid && gridPoints[p].obj == null)
                 {
                     boxes[i].position = new Vector3(gridPoints[p].position.x, 0, gridPoints[p].position.y);
+                    boxes[i].GetComponent<BoxMovement>().gridIndex = p;
                     flags[i].position = new Vector3(gridPoints[p].position.x, -0.48f, gridPoints[p].position.y);
                     gridPoints[p].obj = boxes[i];
                     objPlacedDone = true;
