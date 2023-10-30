@@ -5,78 +5,217 @@ using UnityEngine;
 public class BoxMovement : MonoBehaviour
 {
     //Caching
-    [HideInInspector] public int gridIndex;
+    public int gridIndex;
+    public bool canMoveRight;
+    public bool canMoveLeft;
+    public bool canMoveUp;
+    public bool canMoveDown;
+    public Vector2 currentPosition;
 
     //Instance
-    private GridBuilder gridBuilder;
+    [HideInInspector]public GridBuilder gridBuilder;
 
     // Start is called before the first frame update
     void Start()
     {
-        gridBuilder = GridBuilder.instance;    
+        //gridBuilder = GridBuilder.instance;       
     }
 
     // Update is called once per frame
     void Update()
     {
-        GridBuilder.Point p = gridBuilder.gridPoints[gridIndex];
-
+        CheckPossibleDirection();
         //Y for left-right and X for up-down
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if (p.position.y < gridBuilder.offsetPosition)
-            {
-                GridBuilder.Point pR = gridBuilder.gridPoints[gridIndex + 1];
-                if(pR.isValid)
-                {
-                    transform.position += new Vector3(0, 0, 1);
-                    gridBuilder.gridPoints[gridIndex].obj = null;
-                    gridBuilder.gridPoints[gridIndex + 1].obj = this.transform;
-                    gridIndex++;
-                }
-            }
+            GoRight();
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            if (p.position.y > -gridBuilder.offsetPosition)
-            {
-                GridBuilder.Point pL = gridBuilder.gridPoints[gridIndex - 1];
-                if (pL.isValid)
-                {
-                    transform.position += new Vector3(0, 0, -1);
-                    gridBuilder.gridPoints[gridIndex].obj = null;
-                    gridBuilder.gridPoints[gridIndex - 1].obj = this.transform;
-                    gridIndex--;
-                }
-            }
+            GoLeft();
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            if (p.position.x > -gridBuilder.offsetPosition)
-            {
-                GridBuilder.Point pU = gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize];
-                if (pU.isValid)
-                {
-                    transform.position += new Vector3(-1, 0, 0);
-                    gridBuilder.gridPoints[gridIndex].obj = null;
-                    gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize].obj = this.transform;
-                    gridIndex -= gridBuilder.gridSize;
-                }
-            }
+            GoUp();
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            if (p.position.x < gridBuilder.offsetPosition)
+            GoDown();
+        }
+    }
+
+    //Direction Movement Functions
+    public void GoRight()
+    {
+        if (canMoveRight)
+        {
+            transform.position += new Vector3(0, 0, 1);
+            gridBuilder.gridPoints[gridIndex].obj = null;
+            gridBuilder.gridPoints[gridIndex + 1].obj = this.transform;
+            gridIndex++;
+            currentPosition = gridBuilder.gridPoints[gridIndex].position;
+        }
+    }
+    public void GoLeft()
+    {
+        if (canMoveLeft)
+        {
+            transform.position += new Vector3(0, 0, -1);
+            gridBuilder.gridPoints[gridIndex].obj = null;
+            gridBuilder.gridPoints[gridIndex - 1].obj = this.transform;
+            gridIndex--;
+            currentPosition = gridBuilder.gridPoints[gridIndex].position;
+        }
+    }
+    public void GoUp()
+    {
+        if (canMoveUp)
+        {
+            transform.position += new Vector3(-1, 0, 0);
+            gridBuilder.gridPoints[gridIndex].obj = null;
+            gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize].obj = this.transform;
+            gridIndex -= gridBuilder.gridSize;
+            currentPosition = gridBuilder.gridPoints[gridIndex].position;
+        }
+    }
+    public void GoDown()
+    {
+        if (canMoveDown)
+        {
+            transform.position += new Vector3(1, 0, 0);
+            gridBuilder.gridPoints[gridIndex].obj = null;
+            gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize].obj = this.transform;
+            gridIndex += gridBuilder.gridSize;
+            currentPosition = gridBuilder.gridPoints[gridIndex].position;
+        }
+    }
+
+
+    //Checking for possible direction for box to move
+    public void CheckPossibleDirection()
+    {
+        if (currentPosition.y < gridBuilder.offsetPosition) //Right
+        {
+            GridBuilder.Point pR = gridBuilder.gridPoints[gridIndex + 1];
+            if (pR.isValid)
             {
-                GridBuilder.Point pD = gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize];
-                if (pD.isValid)
+                if (pR.obj == null)
                 {
-                    transform.position += new Vector3(1, 0, 0);
-                    gridBuilder.gridPoints[gridIndex].obj = null;
-                    gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize].obj = this.transform;
-                    gridIndex += gridBuilder.gridSize;
+                    canMoveRight = true;
+                }
+                else
+                {
+                    if(pR.obj.tag == "Box")
+                    {
+                        canMoveRight = pR.obj.GetComponent<BoxMovement>().canMoveRight;
+                    }
+                    else
+                    {
+                        canMoveRight = false;
+                    }
                 }
             }
+            else
+            {
+                canMoveRight = false;
+            }
+        }
+        else
+        {
+            canMoveRight= false;
+        }
+
+        if (currentPosition.y > -gridBuilder.offsetPosition) //Left
+        {            
+            GridBuilder.Point pL = gridBuilder.gridPoints[gridIndex - 1];
+            if (pL.isValid)
+            {
+                if (pL.obj == null)
+                {
+                    canMoveLeft = true;
+                }
+                else
+                {
+                    if (pL.obj.tag == "Box")
+                    {
+                        canMoveLeft = pL.obj.GetComponent<BoxMovement>().canMoveLeft;
+                    }
+                    else
+                    {
+                        canMoveLeft = false;
+                    }
+                }
+            }
+            else
+            {
+                canMoveLeft = false;
+            }
+        }
+        else
+        {
+            canMoveLeft = false;
+        }
+
+        if (currentPosition.x > -gridBuilder.offsetPosition)
+        {
+            GridBuilder.Point pU = gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize];
+            if (pU.isValid)
+            {
+                if (pU.obj == null)
+                {
+                    canMoveUp = true;
+                }
+                else
+                {
+                    if (pU.obj.tag == "Box")
+                    {
+                        canMoveUp = pU.obj.GetComponent<BoxMovement>().canMoveUp;
+                    }
+                    else
+                    {
+                        canMoveUp = false;
+                    }
+                }
+            }
+            else
+            {
+                canMoveUp = false;
+            }
+        }
+        else
+        {
+            canMoveUp = false;
+        }
+
+        if (currentPosition.x < gridBuilder.offsetPosition)
+        {
+            GridBuilder.Point pD = gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize];
+            if (pD.isValid)
+            {
+                if (pD.obj == null)
+                {
+                    canMoveDown = true;
+                }
+                else
+                {
+                    if (pD.obj.tag == "Box")
+                    {
+                        canMoveDown = pD.obj.GetComponent<BoxMovement>().canMoveDown;
+                    }
+                    else
+                    {
+                        canMoveDown = false;
+                    }
+                }
+            }
+            else
+            {
+                canMoveDown = false;
+            }
+        }
+        else
+        {
+            canMoveDown = false;
         }
     }
 }

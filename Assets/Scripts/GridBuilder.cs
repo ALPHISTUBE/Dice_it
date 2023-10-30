@@ -109,7 +109,10 @@ public class GridBuilder : MonoBehaviour
                 if (gridPoints[p].isValid && gridPoints[p].obj == null)
                 {
                     boxes[i].position = new Vector3(gridPoints[p].position.x, 0, gridPoints[p].position.y);
+                    boxes[i].GetComponent<BoxMovement>().currentPosition = gridPoints[p].position;
                     boxes[i].GetComponent<BoxMovement>().gridIndex = p;
+                    boxes[i].GetComponent<BoxMovement>().gridBuilder = instance;
+                    boxes[i].GetComponent<BoxMovement>().CheckPossibleDirection();
                     flags[i].position = new Vector3(gridPoints[p].position.x, -0.48f, gridPoints[p].position.y);
                     gridPoints[p].obj = boxes[i];
                     objPlacedDone = true;
