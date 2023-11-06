@@ -7,12 +7,14 @@ public class GridBuilder : MonoBehaviour
 {
     //Settings
     [Header("Settings")]
-    [Range(3, 10)]
+    [Range(5, 10)]
     public int gridSize = 3;
     [Range(1, 10)]
     public int maxFlags;
     [Range(0, 0.5f)]
     public float maxObstaclePercentage = 0.2f;
+    public BoxController boxController;
+    public bool gridBuiled;
 
     //Prefabs
     [Header("Prefabs")]
@@ -26,7 +28,6 @@ public class GridBuilder : MonoBehaviour
     [HideInInspector] public float offsetPosition;
     private Transform[] boxes;
     private int maxObstacle;
-    private Transform[] obstacles;
     private Transform[] flags;
 
     //Parents
@@ -46,6 +47,7 @@ public class GridBuilder : MonoBehaviour
 
     void Start()
     {
+        gridSize++;
         SetLevel();
     }
 
@@ -60,9 +62,9 @@ public class GridBuilder : MonoBehaviour
         //Setting up Level Properties
         boxes = new Transform[maxFlags];
         flags = new Transform[maxFlags];
-        maxObstacle = (int)(gridSize * gridSize * Random.Range(0.3f, maxObstaclePercentage));
-        obstacles = new Transform[maxObstacle];
+        maxObstacle = (int)((gridSize - 2) * (gridSize - 2) * Random.Range(0.3f, maxObstaclePercentage));
         floor.localScale = Vector3.one * gridSize;
+        floor.GetComponent<Renderer>().material.color = Color.white;
 
 
         //Creating Grid Points
@@ -76,18 +78,50 @@ public class GridBuilder : MonoBehaviour
             }
         }
 
+        //Setting up Border
+        //1st border
+        for (int i = 0; i < gridSize; i++)
+        {
+            Transform obstacles = Instantiate(obstacle, obstacleParent);
+            obstacles.GetComponent<Renderer>().material.color = Color.red;
+            obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
+            gridPoints[i].obj = obstacles;
+        }
+        //Middle border
+        for (int i = gridSize; i < (gridSize * (gridSize - 2)) + 1; i += gridSize)
+        {
+            Transform obstacles = Instantiate(obstacle, obstacleParent);
+            obstacles.GetComponent<Renderer>().material.color = Color.red;
+            obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
+            gridPoints[i].obj = obstacles;
+
+            int _i = i + (gridSize - 1);
+            Transform obstacles1 = Instantiate(obstacle, obstacleParent);
+            obstacles1.GetComponent<Renderer>().material.color = Color.red;
+            obstacles1.position = new Vector3(gridPoints[_i].position.x, -0.35f, gridPoints[_i].position.y);
+            gridPoints[_i].obj = obstacles1;
+        }
+        //Last border
+        for (int i = gridSize * (gridSize - 1); i < gridSize * gridSize; i++)
+        {
+            Transform obstacles = Instantiate(obstacle, obstacleParent);
+            obstacles.GetComponent<Renderer>().material.color = Color.red;
+            obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
+            gridPoints[i].obj = obstacles;
+        }
+
         //Spawing Obstacle Items
         for (int i = 0; i < maxObstacle; i++)
         {
-            obstacles[i] = Instantiate(obstacle, obstacleParent);
+            Transform obstacles = Instantiate(obstacle, obstacleParent);
             bool objPlacedDone = false;
             while (!objPlacedDone)
             {
                 int p = Random.Range(0, gridPoints.Length - 1);
                 if (gridPoints[p].obj == null)
                 {
-                    obstacles[i].position = new Vector3(gridPoints[p].position.x, -0.35f, gridPoints[p].position.y);
-                    gridPoints[p].obj = obstacles[i];
+                    obstacles.position = new Vector3(gridPoints[p].position.x, -0.35f, gridPoints[p].position.y);
+                    gridPoints[p].obj = obstacles;
                     objPlacedDone = true;
                 }
             }
@@ -119,6 +153,10 @@ public class GridBuilder : MonoBehaviour
                 }
             }
         }
+
+        boxController.AssignBox(boxes, gridPoints);
+
+        gridBuiled = true;
     }
 
     //Point Container

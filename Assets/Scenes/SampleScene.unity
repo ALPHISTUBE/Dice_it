@@ -240,7 +240,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 3
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -387,6 +387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 454396542}
+  - component: {fileID: 454396543}
   m_Layer: 0
   m_Name: BoxParent
   m_TagString: Untagged
@@ -409,6 +410,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1420477832}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &454396543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454396541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d3b70e288d5ee4da49aed989ebd362, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -425,7 +438,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &832575518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -537,9 +550,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5751f126c4a914344b10784ca0431af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 10
-  maxFlags: 10
-  maxObstaclePercentage: 0.5
+  gridSize: 8
+  maxFlags: 5
+  maxObstaclePercentage: 0.309
+  boxController: {fileID: 454396543}
+  gridBuiled: 0
   obstacle: {fileID: 1085921530049592158, guid: 360181f3c30ae164f9ddfa870bc58e55,
     type: 3}
   box: {fileID: 6040705086096813236, guid: 005e71bc8464acb479f5d05103114e2b, type: 3}

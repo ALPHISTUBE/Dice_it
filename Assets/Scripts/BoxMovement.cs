@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BoxMovement : MonoBehaviour
 {
+    public int id;
     //Caching
     public int gridIndex;
     public bool canMoveRight;
@@ -11,6 +12,7 @@ public class BoxMovement : MonoBehaviour
     public bool canMoveUp;
     public bool canMoveDown;
     public Vector2 currentPosition;
+    public int prevGridIndex;
 
     //Instance
     [HideInInspector]public GridBuilder gridBuilder;
@@ -18,30 +20,13 @@ public class BoxMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //gridBuilder = GridBuilder.instance;       
+        id = GetInstanceID();    
     }
 
     // Update is called once per frame
     void Update()
     {
         CheckPossibleDirection();
-        //Y for left-right and X for up-down
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            GoRight();
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            GoLeft();
-        }
-        else if (Input.GetKeyDown(KeyCode.W))
-        {
-            GoUp();
-        }
-        else if (Input.GetKeyDown(KeyCode.S))
-        {
-            GoDown();
-        }
     }
 
     //Direction Movement Functions
@@ -49,44 +34,40 @@ public class BoxMovement : MonoBehaviour
     {
         if (canMoveRight)
         {
-            transform.position += new Vector3(0, 0, 1);
-            gridBuilder.gridPoints[gridIndex].obj = null;
-            gridBuilder.gridPoints[gridIndex + 1].obj = this.transform;
+            prevGridIndex = gridIndex;
             gridIndex++;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
+            transform.position += new Vector3(0, 0, 1);
         }
     }
     public void GoLeft()
     {
         if (canMoveLeft)
         {
-            transform.position += new Vector3(0, 0, -1);
-            gridBuilder.gridPoints[gridIndex].obj = null;
-            gridBuilder.gridPoints[gridIndex - 1].obj = this.transform;
+            prevGridIndex = gridIndex;
             gridIndex--;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
+            transform.position += new Vector3(0, 0, -1);
         }
     }
     public void GoUp()
     {
         if (canMoveUp)
         {
-            transform.position += new Vector3(-1, 0, 0);
-            gridBuilder.gridPoints[gridIndex].obj = null;
-            gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize].obj = this.transform;
+            prevGridIndex = gridIndex;
             gridIndex -= gridBuilder.gridSize;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
+            transform.position += new Vector3(-1, 0, 0);
         }
     }
     public void GoDown()
     {
         if (canMoveDown)
         {
-            transform.position += new Vector3(1, 0, 0);
-            gridBuilder.gridPoints[gridIndex].obj = null;
-            gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize].obj = this.transform;
+            prevGridIndex = gridIndex;
             gridIndex += gridBuilder.gridSize;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
+            transform.position += new Vector3(1, 0, 0);
         }
     }
 
@@ -96,29 +77,33 @@ public class BoxMovement : MonoBehaviour
     {
         if (currentPosition.y < gridBuilder.offsetPosition) //Right
         {
-            GridBuilder.Point pR = gridBuilder.gridPoints[gridIndex + 1];
-            if (pR.isValid)
+            for (int i = 1; i < gridBuilder.gridSize - 1; i++)
             {
-                if (pR.obj == null)
+                GridBuilder.Point pR = gridBuilder.gridPoints[gridIndex + i];
+                if (pR.isValid)
                 {
-                    canMoveRight = true;
-                }
-                else
-                {
-                    if(pR.obj.tag == "Box")
+                    if (pR.obj != null)
                     {
-                        canMoveRight = pR.obj.GetComponent<BoxMovement>().canMoveRight;
+                        if(pR.obj.tag == "Obstacle")
+                        {
+                            canMoveRight = false; break;
+                        }
+                        else if (pR.obj.tag == "Box")
+                        {
+                            if (pR.obj.GetComponent<BoxMovement>().canMoveRight) { canMoveRight = true; } else { canMoveRight = false; }
+                        }
                     }
                     else
                     {
-                        canMoveRight = false;
+                        canMoveRight = true; break;
                     }
                 }
+                else
+                {
+                    canMoveRight = false; break;
+                }
             }
-            else
-            {
-                canMoveRight = false;
-            }
+            
         }
         else
         {
@@ -127,60 +112,68 @@ public class BoxMovement : MonoBehaviour
 
         if (currentPosition.y > -gridBuilder.offsetPosition) //Left
         {            
-            GridBuilder.Point pL = gridBuilder.gridPoints[gridIndex - 1];
-            if (pL.isValid)
+            for (int i = 1; i < gridBuilder.gridSize - 1; i++)
             {
-                if (pL.obj == null)
+                GridBuilder.Point pL = gridBuilder.gridPoints[gridIndex - 1];
+                if (pL.isValid)
                 {
-                    canMoveLeft = true;
-                }
-                else
-                {
-                    if (pL.obj.tag == "Box")
+                    if (pL.obj != null)
                     {
-                        canMoveLeft = pL.obj.GetComponent<BoxMovement>().canMoveLeft;
+                        if (pL.obj.tag == "Obstacle")
+                        {
+                            canMoveLeft = false; break;
+                        }
+                        else if (pL.obj.tag == "Box")
+                        {
+                            if (pL.obj.GetComponent<BoxMovement>().canMoveLeft) { canMoveLeft = true; } else { canMoveLeft = false; }
+                        }
                     }
                     else
                     {
-                        canMoveLeft = false;
+                        canMoveLeft = true; break;
                     }
                 }
+                else
+                {
+                    canMoveLeft = false; break;
+                }
             }
-            else
-            {
-                canMoveLeft = false;
-            }
+
         }
         else
         {
             canMoveLeft = false;
         }
 
-        if (currentPosition.x > -gridBuilder.offsetPosition)
+        if (currentPosition.x > -gridBuilder.offsetPosition) //UP
         {
-            GridBuilder.Point pU = gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize];
-            if (pU.isValid)
+            for (int i = 1; i < gridBuilder.gridSize - 1; i++)
             {
-                if (pU.obj == null)
+                GridBuilder.Point pU = gridBuilder.gridPoints[gridIndex - gridBuilder.gridSize];
+                if (pU.isValid)
                 {
-                    canMoveUp = true;
-                }
-                else
-                {
-                    if (pU.obj.tag == "Box")
+                    if (pU.obj != null)
                     {
-                        canMoveUp = pU.obj.GetComponent<BoxMovement>().canMoveUp;
+                        if (pU.obj.tag == "Obstacle")
+                        {
+                            canMoveUp = false; break;
+                        }
+                        else if (pU.obj.tag == "Box")
+                        {
+                            if (pU.obj.GetComponent<BoxMovement>().canMoveUp) { canMoveUp = true; } else { canMoveUp= false; }
+                        }
                     }
                     else
                     {
-                        canMoveUp = false;
+                        canMoveUp = true; break;
                     }
                 }
+                else
+                {
+                    canMoveUp = false; break;
+                }
             }
-            else
-            {
-                canMoveUp = false;
-            }
+
         }
         else
         {
@@ -189,29 +182,33 @@ public class BoxMovement : MonoBehaviour
 
         if (currentPosition.x < gridBuilder.offsetPosition)
         {
-            GridBuilder.Point pD = gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize];
-            if (pD.isValid)
+            for (int i = 1; i < gridBuilder.gridSize - 1; i++)
             {
-                if (pD.obj == null)
+                GridBuilder.Point pD = gridBuilder.gridPoints[gridIndex + gridBuilder.gridSize];
+                if (pD.isValid)
                 {
-                    canMoveDown = true;
-                }
-                else
-                {
-                    if (pD.obj.tag == "Box")
+                    if (pD.obj != null)
                     {
-                        canMoveDown = pD.obj.GetComponent<BoxMovement>().canMoveDown;
+                        if (pD.obj.tag == "Obstacle")
+                        {
+                            canMoveDown = false; break;
+                        }
+                        else if (pD.obj.tag == "Box")
+                        {
+                            if (pD.obj.GetComponent<BoxMovement>().canMoveDown) { canMoveDown = true; } else { canMoveDown = false; }
+                        }
                     }
                     else
                     {
-                        canMoveDown = false;
+                        canMoveDown = true; break;
                     }
                 }
+                else
+                {
+                    canMoveDown = false; break;
+                }
             }
-            else
-            {
-                canMoveDown = false;
-            }
+
         }
         else
         {
