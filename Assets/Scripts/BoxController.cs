@@ -7,8 +7,8 @@ public class BoxController : MonoBehaviour
     //Caching
     private List<Transform> boxes = new List<Transform>();
     private GridBuilder.Point[] points;
-    private int maxBox;
     private bool moved;
+    public List<BreakableObstacle> breakableObstacles;
 
     //Instance
     private GridBuilder gridBuiler;
@@ -68,6 +68,12 @@ public class BoxController : MonoBehaviour
                     points[bm.prevGridIndex].obj = null;
                 }
             }
+
+            foreach (BreakableObstacle o in breakableObstacles)
+            {
+                o.maxMove--;
+            }
+
             moved = false;
         }
     }
@@ -76,7 +82,6 @@ public class BoxController : MonoBehaviour
     public void AssignBox(Transform[] _boxes, GridBuilder.Point[] _points)
     {
         points = _points;
-        maxBox = _boxes.Length;
         foreach (Transform t in _boxes)
         {
             boxes.Add(t);
