@@ -9,6 +9,7 @@ public class BoxController : MonoBehaviour
     private GridBuilder.Point[] points;
     private bool moved;
     public List<BreakableObstacle> breakableObstacles;
+    private bool canAllowToMove;
 
     //Instance
     private GridBuilder gridBuiler;
@@ -17,6 +18,7 @@ public class BoxController : MonoBehaviour
     void Start()
     {
         gridBuiler = GridBuilder.instance;
+        canAllowToMove = true;
     }
 
     // Update is called once per frame
@@ -26,34 +28,50 @@ public class BoxController : MonoBehaviour
         //Y for left-right and X for up-down
         if (Input.GetKeyDown(KeyCode.D))
         {
-            for (int i = 0; i < boxes.Count; i++)
+            if (canAllowToMove)
             {
-                boxes[i].GetComponent<BoxMovement>().GoRight();
+                for (int i = 0; i < boxes.Count; i++)
+                {
+                    boxes[i].GetComponent<BoxMovement>().GoRight();
+                }
             }
+            canAllowToMove = false;
             moved = true;
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            for (int i = 0; i < boxes.Count; i++)
+            if (canAllowToMove)
             {
-                boxes[i].GetComponent<BoxMovement>().GoLeft();
+                for (int i = 0; i < boxes.Count; i++)
+                {
+                    boxes[i].GetComponent<BoxMovement>().GoLeft();
+                }
             }
+            canAllowToMove = false;
             moved = true;
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            for (int i = 0; i < boxes.Count; i++)
+            if (canAllowToMove)
             {
-                boxes[i].GetComponent<BoxMovement>().GoUp();
+                for (int i = 0; i < boxes.Count; i++)
+                {
+                    boxes[i].GetComponent<BoxMovement>().GoUp();
+                }
             }
+            canAllowToMove = false;
             moved = true;
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            for (int i = 0; i < boxes.Count; i++)
+            if (canAllowToMove)
             {
-                boxes[i].GetComponent<BoxMovement>().GoDown();
+                for (int i = 0; i < boxes.Count; i++)
+                {
+                    boxes[i].GetComponent<BoxMovement>().GoDown();
+                }
             }
+            canAllowToMove = false;
             moved = true;
         }
 
@@ -62,7 +80,8 @@ public class BoxController : MonoBehaviour
             for (int i = 0; i < boxes.Count; i++)
             {
                 BoxMovement bm = boxes[i].GetComponent<BoxMovement>();
-                points[bm.gridIndex].obj = bm.transform;
+                bm.ResetHoleInfo();
+                if(!points[bm.gridIndex].hasHole) { points[bm.gridIndex].obj = bm.transform; }
                 if (points[bm.prevGridIndex].obj != null && points[bm.prevGridIndex].obj.tag == "Box" && points[bm.prevGridIndex].obj.GetComponent<BoxMovement>().id == bm.id)
                 {
                     points[bm.prevGridIndex].obj = null;
@@ -73,7 +92,7 @@ public class BoxController : MonoBehaviour
             {
                 o.maxMove--;
             }
-
+            StartCoroutine(ResetMove());
             moved = false;
         }
     }
@@ -86,5 +105,12 @@ public class BoxController : MonoBehaviour
         {
             boxes.Add(t);
         }
+    }
+
+    //Reset Moving
+    IEnumerator ResetMove()
+    {
+        yield return new WaitForSeconds(0.2f);
+        canAllowToMove = true;
     }
 }

@@ -143,6 +143,7 @@ public class GridBuilder : MonoBehaviour
                     }else if(obstacles.tag == "Hole")
                     {
                         obstacles.position = new Vector3(gridPoints[p].position.x, -0.5f, gridPoints[p].position.y);
+                        gridPoints[p].hasHole = true;
                     }
                     objPlacedDone = true;
                 }
@@ -155,7 +156,7 @@ public class GridBuilder : MonoBehaviour
         //Setting up floors
         for (int i = 0; i < gridPoints.Length; i++)
         {
-            if (gridPoints[i].isValid)
+            if (gridPoints[i].isValid && !gridPoints[i].hasHole)
             {
                 Transform _floor = Instantiate(floor, floorParent);
                 _floor.position = new Vector3(gridPoints[i].position.x, -0.5f, gridPoints[i].position.y);
@@ -173,11 +174,12 @@ public class GridBuilder : MonoBehaviour
                 int p = Random.Range(0, gridPoints.Length - 1);
                 if (gridPoints[p].isValid && gridPoints[p].obj == null)
                 {
-                    boxes[i].position = new Vector3(gridPoints[p].position.x, -0.06f, gridPoints[p].position.y);
-                    boxes[i].GetComponent<BoxMovement>().currentPosition = gridPoints[p].position;
-                    boxes[i].GetComponent<BoxMovement>().gridIndex = p;
-                    boxes[i].GetComponent<BoxMovement>().gridBuilder = instance;
-                    boxes[i].GetComponent<BoxMovement>().CheckPossibleDirection();
+                    BoxMovement bm = boxes[i].GetComponent<BoxMovement>();
+                    bm.pos = new Vector3(gridPoints[p].position.x, -0.06f, gridPoints[p].position.y);
+                    bm.currentPosition = gridPoints[p].position;
+                    bm.gridIndex = p;
+                    bm.gridBuilder = instance;
+                    bm.CheckPossibleDirection();
                     flags[i].position = new Vector3(gridPoints[p].position.x, -0.48f, gridPoints[p].position.y);
                     gridPoints[p].obj = boxes[i];
                     objPlacedDone = true;
@@ -197,6 +199,7 @@ public class GridBuilder : MonoBehaviour
         public Vector2 position;
         public Transform obj;
         public bool isValid;
+        public bool hasHole;
     }
 
     //Check for neighbour cell and Set Current cell to valid if it can move
@@ -236,17 +239,21 @@ public class GridBuilder : MonoBehaviour
                     if (pD.obj == null) { ways++; }
                 }
 
-                if(ways > 0) 
-                { 
-                    gridPoints[i].isValid = true; 
-                } 
-                else 
+                if (ways > 0)
+                {
+                    gridPoints[i].isValid = true;
+                }
+                else
                 {
                     Transform obstacles = Instantiate(obstacle, obstacleParent);
                     obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
                     gridPoints[i].obj = obstacles;
                 }
                 //print($"P:{i}, W:{ways}, VAILD:{gridPoints[i].isVaild}");
+            }
+            else
+            {
+                if (gridPoints[i].hasHole) { gridPoints[i].isValid = true; }
             }
         }
     }

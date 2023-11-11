@@ -240,7 +240,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 3
+  m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -614,8 +614,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5751f126c4a914344b10784ca0431af1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 5
-  maxFlags: 2
+  gridSize: 8
+  maxFlags: 6
   maxObstaclePercentage: 0.309
   boxController: {fileID: 454396543}
   gridBuilded: 0

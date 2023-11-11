@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BoxMovement : MonoBehaviour
@@ -13,6 +14,13 @@ public class BoxMovement : MonoBehaviour
     public bool canMoveDown;
     public Vector2 currentPosition;
     public int prevGridIndex;
+    private bool inHole;
+    private bool inHoleR;
+    private bool inHoleL;
+    private bool inHoleU;
+    private bool inHoleD;
+    public Vector3 pos;
+    private bool stopMoving;
 
     //Instance
     [HideInInspector]public GridBuilder gridBuilder;
@@ -27,6 +35,19 @@ public class BoxMovement : MonoBehaviour
     void Update()
     {
         CheckPossibleDirection();
+        if(transform.position != pos && !stopMoving)
+        {
+            transform.position = Vector3.Lerp(transform.position, pos, 0.1f);
+        }
+        else
+        {
+            if (inHole)
+            {
+                stopMoving = true;
+                if (!transform.GetComponent<Rigidbody>()) { transform.AddComponent<Rigidbody>(); }
+                StartCoroutine(Disable());
+            } 
+        }
     }
 
     //Direction Movement Functions
@@ -37,7 +58,12 @@ public class BoxMovement : MonoBehaviour
             prevGridIndex = gridIndex;
             gridIndex++;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            transform.position += new Vector3(0, 0, 1);
+            pos = transform.position + new Vector3(0, 0, 1);
+        }
+
+        if(inHoleR)
+        {
+            inHole = true;            
         }
     }
     public void GoLeft()
@@ -47,7 +73,12 @@ public class BoxMovement : MonoBehaviour
             prevGridIndex = gridIndex;
             gridIndex--;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            transform.position += new Vector3(0, 0, -1);
+            pos = transform.position + new Vector3(0, 0, -1);
+        }
+
+        if (inHoleL)
+        {
+            inHole = true;
         }
     }
     public void GoUp()
@@ -57,7 +88,12 @@ public class BoxMovement : MonoBehaviour
             prevGridIndex = gridIndex;
             gridIndex -= gridBuilder.gridSize;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            transform.position += new Vector3(-1, 0, 0);
+            pos = transform.position + new Vector3(-1, 0, 0);            
+        }
+
+        if (inHoleU)
+        {
+            inHole = true;
         }
     }
     public void GoDown()
@@ -67,10 +103,21 @@ public class BoxMovement : MonoBehaviour
             prevGridIndex = gridIndex;
             gridIndex += gridBuilder.gridSize;
             currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            transform.position += new Vector3(1, 0, 0);
+            pos = transform.position + new Vector3(1, 0, 0);
+        }
+
+        if (inHoleD)
+        {
+            inHole = true;
         }
     }
 
+    //Disable Object
+    private IEnumerator Disable()
+    {
+        yield return new WaitForSeconds(1);
+        gameObject.SetActive(false);
+    }
 
     //Checking for possible direction for box to move
     public void CheckPossibleDirection()
@@ -91,6 +138,11 @@ public class BoxMovement : MonoBehaviour
                         else if (pR.obj.tag == "Box")
                         {
                             if (pR.obj.GetComponent<BoxMovement>().canMoveRight) { canMoveRight = true; } else { canMoveRight = false; }
+                        }
+                        else if (pR.obj.tag == "Hole")
+                        {
+                            inHoleR = true;
+                            canMoveRight = true; break;
                         }
                     }
                     else
@@ -127,6 +179,11 @@ public class BoxMovement : MonoBehaviour
                         {
                             if (pL.obj.GetComponent<BoxMovement>().canMoveLeft) { canMoveLeft = true; } else { canMoveLeft = false; }
                         }
+                        else if(pL.obj.tag == "Hole")
+                        {
+                            inHoleL = true;
+                            canMoveLeft = true; break;
+                        }
                     }
                     else
                     {
@@ -161,6 +218,11 @@ public class BoxMovement : MonoBehaviour
                         else if (pU.obj.tag == "Box")
                         {
                             if (pU.obj.GetComponent<BoxMovement>().canMoveUp) { canMoveUp = true; } else { canMoveUp= false; }
+                        }
+                        else if (pU.obj.tag == "Hole")
+                        {
+                            inHoleU = true;
+                            canMoveUp = true; break;
                         }
                     }
                     else
@@ -197,6 +259,12 @@ public class BoxMovement : MonoBehaviour
                         {
                             if (pD.obj.GetComponent<BoxMovement>().canMoveDown) { canMoveDown = true; } else { canMoveDown = false; }
                         }
+                        else if (pD.obj.tag == "Hole")
+                        {
+                            inHoleD = true;
+                            canMoveDown = true;
+                            break;
+                        }
                     }
                     else
                     {
@@ -214,5 +282,12 @@ public class BoxMovement : MonoBehaviour
         {
             canMoveDown = false;
         }
+    }
+    public void ResetHoleInfo()
+    {
+        inHoleR = false;
+        inHoleL = false;
+        inHoleU = false;
+        inHoleD = false;
     }
 }
