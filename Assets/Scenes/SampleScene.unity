@@ -575,6 +575,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1420477832}
   - component: {fileID: 1420477833}
+  - component: {fileID: 1420477834}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -615,7 +616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 8
-  maxFlags: 6
+  maxFlags: 5
   maxObstaclePercentage: 0.309
   boxController: {fileID: 454396543}
   gridBuilded: 0
@@ -634,6 +635,22 @@ MonoBehaviour:
   flagParent: {fileID: 2147098996}
   floorParent: {fileID: 715216935}
   holeParent: {fileID: 445173900}
+--- !u!114 &1420477834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1420477831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 437a1a76d95b44242992568dc18e15f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bc: {fileID: 454396543}
+  levelCreated: 0
+  maxMove: 6
+  moves: 
 --- !u!1 &2147098995
 GameObject:
   m_ObjectHideFlags: 0

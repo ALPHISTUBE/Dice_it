@@ -21,6 +21,7 @@ public class BoxMovement : MonoBehaviour
     private bool inHoleD;
     public Vector3 pos;
     private bool stopMoving;
+    private int startGridIndex;
 
     //Instance
     [HideInInspector]public GridBuilder gridBuilder;
@@ -35,9 +36,10 @@ public class BoxMovement : MonoBehaviour
     void Update()
     {
         CheckPossibleDirection();
+        if (!LevelCreator.instance.levelCreated) { return; }
         if(transform.position != pos && !stopMoving)
         {
-            transform.position = Vector3.Lerp(transform.position, pos, 0.1f);
+            transform.position = Vector3.Lerp(transform.position, pos, 0.07f);
         }
         else
         {
@@ -57,14 +59,19 @@ public class BoxMovement : MonoBehaviour
         {
             prevGridIndex = gridIndex;
             gridIndex++;
-            currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            pos = transform.position + new Vector3(0, 0, 1);
-        }
+            
+            //Position will not change till
+            if (LevelCreator.instance.levelCreated)
+            {
+                currentPosition = gridBuilder.gridPoints[gridIndex].position;
+                pos = transform.position + new Vector3(0, 0, 1);
+            }
 
-        if(inHoleR)
-        {
-            inHole = true;            
-        }
+            if (inHoleR)
+            {
+                inHole = true;
+            }
+        }        
     }
     public void GoLeft()
     {
@@ -72,14 +79,19 @@ public class BoxMovement : MonoBehaviour
         {
             prevGridIndex = gridIndex;
             gridIndex--;
-            currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            pos = transform.position + new Vector3(0, 0, -1);
-        }
 
-        if (inHoleL)
-        {
-            inHole = true;
-        }
+            //Position will not change till
+            if (LevelCreator.instance.levelCreated)
+            {
+                currentPosition = gridBuilder.gridPoints[gridIndex].position;
+                pos = transform.position + new Vector3(0, 0, -1);
+            }
+         
+            if (inHoleL)
+            {
+                inHole = true;
+            }
+        }        
     }
     public void GoUp()
     {
@@ -87,13 +99,18 @@ public class BoxMovement : MonoBehaviour
         {
             prevGridIndex = gridIndex;
             gridIndex -= gridBuilder.gridSize;
-            currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            pos = transform.position + new Vector3(-1, 0, 0);            
-        }
 
-        if (inHoleU)
-        {
-            inHole = true;
+            //Position will not change till
+            if (LevelCreator.instance.levelCreated)
+            {
+                currentPosition = gridBuilder.gridPoints[gridIndex].position;
+                pos = transform.position + new Vector3(-1, 0, 0);
+            }
+
+            if (inHoleU)
+            {
+                inHole = true;
+            }
         }
     }
     public void GoDown()
@@ -102,13 +119,18 @@ public class BoxMovement : MonoBehaviour
         {
             prevGridIndex = gridIndex;
             gridIndex += gridBuilder.gridSize;
-            currentPosition = gridBuilder.gridPoints[gridIndex].position;
-            pos = transform.position + new Vector3(1, 0, 0);
-        }
 
-        if (inHoleD)
-        {
-            inHole = true;
+            //Position will not change till
+            if (LevelCreator.instance.levelCreated)
+            {
+                currentPosition = gridBuilder.gridPoints[gridIndex].position;
+                pos = transform.position + new Vector3(1, 0, 0);
+            }
+
+            if (inHoleD)
+            {
+                inHole = true;
+            }
         }
     }
 
@@ -283,6 +305,7 @@ public class BoxMovement : MonoBehaviour
             canMoveDown = false;
         }
     }
+    //Resets Which direction does hole has
     public void ResetHoleInfo()
     {
         inHoleR = false;
@@ -290,4 +313,20 @@ public class BoxMovement : MonoBehaviour
         inHoleU = false;
         inHoleD = false;
     }
+    //Resets Grid index after creating level
+    public void ResetGridIndex()
+    {
+        if (gridBuilder.gridPoints[gridIndex].obj != null && gridBuilder.gridPoints[gridIndex].obj.GetComponent<BoxMovement>().id == id)
+        {
+            gridBuilder.gridPoints[gridIndex].obj = null;
+        }
+        gridIndex = startGridIndex;
+        gridBuilder.gridPoints[gridIndex].obj = transform;
+    }
+    //Function for getting for value
+    public void SetStartGridIndex(int i)
+    {
+        startGridIndex = i;
+    }
+    public int GetStartGridIndex() {  return startGridIndex; }
 }

@@ -31,6 +31,7 @@ public class GridBuilder : MonoBehaviour
     private Transform[] boxes;
     private int maxObstacle;
     private Transform[] flags;
+    private List<int> holes = new List<int>();
 
     //Parents
     [Header("Parents")]
@@ -51,7 +52,6 @@ public class GridBuilder : MonoBehaviour
 
     void Start()
     {
-        gridSize++;
         SetLevel();
     }
 
@@ -131,6 +131,7 @@ public class GridBuilder : MonoBehaviour
                 int p = Random.Range(0, gridPoints.Length - 1);
                 if (gridPoints[p].obj == null)
                 {
+                    obstacles.name = $"{obstacles.name}({p})";
                     obstacles.position = new Vector3(gridPoints[p].position.x, -0.35f, gridPoints[p].position.y);
                     gridPoints[p].obj = obstacles;
                     if (obstacles.GetComponent<BreakableObstacle>())
@@ -138,10 +139,13 @@ public class GridBuilder : MonoBehaviour
                         Transform _floor = Instantiate(floor, floorParent);
                         _floor.position = new Vector3(gridPoints[p].position.x, -0.5f, gridPoints[p].position.y);
                         boxController.breakableObstacles.Add(obstacles.GetComponent<BreakableObstacle>());
-                        obstacles.GetComponent<BreakableObstacle>().maxMove = Random.Range(1, 4);
+                        int _maxMove = Random.Range(1, 4);
+                        obstacles.GetComponent<BreakableObstacle>().maxMove = _maxMove;
+                        obstacles.GetComponent<BreakableObstacle>().SetStartMaxMove(_maxMove);
                         obstacles.GetComponent<BreakableObstacle>().gridIndex = p;
                     }else if(obstacles.tag == "Hole")
                     {
+                        holes.Add(p);
                         obstacles.position = new Vector3(gridPoints[p].position.x, -0.5f, gridPoints[p].position.y);
                         gridPoints[p].hasHole = true;
                     }
@@ -178,6 +182,7 @@ public class GridBuilder : MonoBehaviour
                     bm.pos = new Vector3(gridPoints[p].position.x, -0.06f, gridPoints[p].position.y);
                     bm.currentPosition = gridPoints[p].position;
                     bm.gridIndex = p;
+                    bm.SetStartGridIndex(p);
                     bm.gridBuilder = instance;
                     bm.CheckPossibleDirection();
                     flags[i].position = new Vector3(gridPoints[p].position.x, -0.48f, gridPoints[p].position.y);
@@ -188,8 +193,10 @@ public class GridBuilder : MonoBehaviour
         }
 
         boxController.AssignBox(boxes, gridPoints);
+        LevelCreator.instance.AssignBox(boxes, gridPoints, flags);
 
         gridBuilded = true;
+        StartCoroutine(LevelCreator.instance.CreateLevel());
     }
 
     //Point Container
@@ -251,10 +258,15 @@ public class GridBuilder : MonoBehaviour
                 }
                 //print($"P:{i}, W:{ways}, VAILD:{gridPoints[i].isVaild}");
             }
-            else
-            {
-                if (gridPoints[i].hasHole) { gridPoints[i].isValid = true; }
-            }
+        }
+    }
+
+    //Reset Holes
+    public void ResetHoleVaildity()
+    {
+        foreach(int i in holes)
+        {
+            gridPoints[i].isValid = true;
         }
     }
 

@@ -24,7 +24,7 @@ public class BoxController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(!LevelCreator.instance.levelCreated) { return; }
         //Y for left-right and X for up-down
         if (Input.GetKeyDown(KeyCode.D))
         {

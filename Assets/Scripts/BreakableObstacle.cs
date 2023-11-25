@@ -6,6 +6,7 @@ public class BreakableObstacle : MonoBehaviour
 {
     public int maxMove;
     public int gridIndex;
+    private int startMaxMove;
 
     // Update is called once per frame
     void Update()
@@ -14,7 +15,18 @@ public class BreakableObstacle : MonoBehaviour
         {
             GridBuilder.instance.gridPoints[gridIndex].obj = null;
             GridBuilder.instance.gridPoints[gridIndex].isValid = true;
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
+    }
+
+    //Access to value
+    public int GetStartMaxMove()
+    {
+        return startMaxMove;
+    }
+
+    public void SetStartMaxMove(int i)
+    {
+        startMaxMove = i;
     }
 }
