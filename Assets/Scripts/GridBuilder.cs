@@ -148,6 +148,7 @@ public class GridBuilder : MonoBehaviour
                         holes.Add(p);
                         obstacles.position = new Vector3(gridPoints[p].position.x, -0.5f, gridPoints[p].position.y);
                         gridPoints[p].hasHole = true;
+                        gridPoints[p].isValid = true;
                     }
                     objPlacedDone = true;
                 }
@@ -193,7 +194,7 @@ public class GridBuilder : MonoBehaviour
         }
 
         boxController.AssignBox(boxes, gridPoints);
-        LevelCreator.instance.AssignBox(boxes, gridPoints, flags);
+        LevelCreator.instance.AssignBox(boxes, gridPoints, flags, holes);
 
         gridBuilded = true;
         StartCoroutine(LevelCreator.instance.CreateLevel());

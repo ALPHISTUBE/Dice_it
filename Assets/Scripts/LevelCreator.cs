@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 
 public class LevelCreator : MonoBehaviour
@@ -13,9 +14,10 @@ public class LevelCreator : MonoBehaviour
     private int prevMove;
 
     //Caching
-    private List<Transform> boxes = new List<Transform>();
+    private Transform[] boxes;
     private GridBuilder.Point[] points;
     private Transform[] flags;
+    private List<int> holes = new List<int>();
 
     //Instance
     private GridBuilder gb;
@@ -36,38 +38,54 @@ public class LevelCreator : MonoBehaviour
     {
         for (int i = 0; i < maxMove; i++)
         {
-            int nextMove = Random.Range(0, 4);
-            moves.Add(nextMove);
+            bool moveHasBeenSet = false;
+            while(!moveHasBeenSet)
+            {
+                int nextMove = Random.Range(0, 4);
+                bool success = true;
 
-            if(nextMove == 0)
-            {
-                for (int j = 0; j < boxes.Count; j++)
+                for (int j = 0; j < boxes.Length; j++)
                 {
-                    boxes[j].GetComponent<BoxMovement>().GoRight();
-                }
-            }
-            else if(nextMove == 1)
-            {
-                for (int j = 0; j < boxes.Count; j++)
-                {
-                    boxes[j].GetComponent<BoxMovement>().GoDown();
-                }
-            }
-            else if (nextMove == 2)
-            {
-                for (int j = 0; j < boxes.Count; j++)
-                {
-                    boxes[j].GetComponent<BoxMovement>().GoLeft();
-                }
-            }
-            else if(nextMove == 3){
-                for (int j = 0; j < boxes.Count; j++)
-                {
-                    boxes[j].GetComponent<BoxMovement>().GoUp();
-                }
-            }
+                    BoxMovement bm = boxes[j].GetComponent<BoxMovement>();
+                    if (bm.dirHoles[nextMove]) { print(bm.dirHoles[nextMove]); success = false; break; }
+                }                
 
-            for (int j = 0; j < boxes.Count; j++)
+                if (success)
+                {
+                    if (nextMove == 0)
+                    {
+                        for (int j = 0; j < boxes.Length; j++)
+                        {
+                            boxes[j].GetComponent<BoxMovement>().GoRight();
+                        }
+                    }
+                    else if (nextMove == 1)
+                    {
+                        for (int j = 0; j < boxes.Length; j++)
+                        {
+                            boxes[j].GetComponent<BoxMovement>().GoDown();
+                        }
+                    }
+                    else if (nextMove == 2)
+                    {
+                        for (int j = 0; j < boxes.Length; j++)
+                        {
+                            boxes[j].GetComponent<BoxMovement>().GoLeft();
+                        }
+                    }
+                    else if (nextMove == 3)
+                    {
+                        for (int j = 0; j < boxes.Length; j++)
+                        {
+                            boxes[j].GetComponent<BoxMovement>().GoUp();
+                        }
+                    }
+                    moves.Add(nextMove);
+                    moveHasBeenSet = true;
+                }
+            }            
+
+            for (int j = 0; j < boxes.Length; j++)
             {
                 BoxMovement bm = boxes[j].GetComponent<BoxMovement>();
                 bm.ResetHoleInfo();
@@ -86,11 +104,11 @@ public class LevelCreator : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
 
-        for (int j = 0; j < boxes.Count; j++)
+        for (int j = 0; j < boxes.Length; j++)
         {
             BoxMovement bm = boxes[j].GetComponent<BoxMovement>();
             flags[j].position = new Vector3(points[bm.gridIndex].position.x, -0.48f, points[bm.gridIndex].position.y);
-            print($"{bm.GetStartGridIndex()},{bm.gridIndex}, {points[bm.gridIndex].position}, {flags[j].position}");
+            //print($"{bm.GetStartGridIndex()},{bm.gridIndex}, {points[bm.gridIndex].position}, {flags[j].position}");
             bm.ResetGridIndex();
         }
 
@@ -98,19 +116,24 @@ public class LevelCreator : MonoBehaviour
         {
             o.gameObject.SetActive(true);
             o.maxMove = o.GetStartMaxMove();
+            gb.gridPoints[o.gridIndex].obj = o.transform;
+            gb.gridPoints[o.gridIndex].isValid = false;
+        }
+
+        foreach(int i in holes)
+        {
+            //gb.gridPoints[i].isValid = true;
         }
 
         levelCreated = true;
     }
 
     //Assigning Box
-    public void AssignBox(Transform[] _boxes, GridBuilder.Point[] _points, Transform[] _flags)
+    public void AssignBox(Transform[] _boxes, GridBuilder.Point[] _points, Transform[] _flags, List<int> _holes)
     {
         points = _points;
         flags = _flags;
-        foreach (Transform t in _boxes)
-        {
-            boxes.Add(t);
-        }
+        boxes = _boxes;
+        holes = _holes;
     }
 }

@@ -15,10 +15,11 @@ public class BoxMovement : MonoBehaviour
     public Vector2 currentPosition;
     public int prevGridIndex;
     private bool inHole;
-    private bool inHoleR;
-    private bool inHoleL;
-    private bool inHoleU;
-    private bool inHoleD;
+    public bool inHoleR { get; private set; }
+    public bool inHoleL { get; private set; }
+    public bool inHoleU { get; private set; }
+    public bool inHoleD { get; private set; }
+    public List<bool> dirHoles = new List<bool>();
     public Vector3 pos;
     private bool stopMoving;
     private int startGridIndex;
@@ -39,7 +40,7 @@ public class BoxMovement : MonoBehaviour
         if (!LevelCreator.instance.levelCreated) { return; }
         if(transform.position != pos && !stopMoving)
         {
-            transform.position = Vector3.Lerp(transform.position, pos, 0.07f);
+            transform.position = Vector3.Lerp(transform.position, pos, 0.3f);
         }
         else
         {
@@ -304,6 +305,8 @@ public class BoxMovement : MonoBehaviour
         {
             canMoveDown = false;
         }
+
+        dirHoles = new List<bool> { inHoleR, inHoleD, inHoleL, inHoleU };
     }
     //Resets Which direction does hole has
     public void ResetHoleInfo()
@@ -322,6 +325,7 @@ public class BoxMovement : MonoBehaviour
         }
         gridIndex = startGridIndex;
         gridBuilder.gridPoints[gridIndex].obj = transform;
+        ResetHoleInfo();
     }
     //Function for getting for value
     public void SetStartGridIndex(int i)
