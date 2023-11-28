@@ -24,6 +24,7 @@ public class GridBuilder : MonoBehaviour
     public Transform flag;
     public Transform floor;
     public Transform hole;
+    public Transform border;
 
     //Caching
     public Point[] gridPoints;
@@ -81,31 +82,33 @@ public class GridBuilder : MonoBehaviour
         }
 
         //Setting up Border
+        float borderScale = ((gridSize - 5) * 0.5f) + 1.5f;
+        border.localScale = new Vector3(borderScale, borderScale, 0.5f); //Z axis is up
         //1st border
         for (int i = 0; i < gridSize; i++)
         {
-            Transform obstacles = Instantiate(obstacle, obstacleParent);
-            obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
-            gridPoints[i].obj = obstacles;
+            //Transform obstacles = Instantiate(obstacle, obstacleParent);
+            //obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
+            gridPoints[i].obj = border;
         }
         //Middle border
         for (int i = gridSize; i < (gridSize * (gridSize - 2)) + 1; i += gridSize)
         {
-            Transform obstacles = Instantiate(obstacle, obstacleParent);
-            obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
-            gridPoints[i].obj = obstacles;
+            //Transform obstacles = Instantiate(obstacle, obstacleParent);
+            //obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
+            gridPoints[i].obj = border;
 
             int _i = i + (gridSize - 1);
-            Transform obstacles1 = Instantiate(obstacle, obstacleParent);
-            obstacles1.position = new Vector3(gridPoints[_i].position.x, -0.35f, gridPoints[_i].position.y);
-            gridPoints[_i].obj = obstacles1;
+            //Transform obstacles1 = Instantiate(obstacle, obstacleParent);
+            //obstacles1.position = new Vector3(gridPoints[_i].position.x, -0.35f, gridPoints[_i].position.y);
+            gridPoints[_i].obj = border;
         }
         //Last border
         for (int i = gridSize * (gridSize - 1); i < gridSize * gridSize; i++)
         {
-            Transform obstacles = Instantiate(obstacle, obstacleParent);
-            obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
-            gridPoints[i].obj = obstacles;
+            //Transform obstacles = Instantiate(obstacle, obstacleParent);
+            //obstacles.position = new Vector3(gridPoints[i].position.x, -0.35f, gridPoints[i].position.y);
+            gridPoints[i].obj = border;
         }
 
         //Spawing Obstacle Items

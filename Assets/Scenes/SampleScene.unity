@@ -123,6 +123,85 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &34285769
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1420477832}
+    m_Modifications:
+    - target: {fileID: 3685383099981925740, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_Name
+      value: border
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4999999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.699
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071067
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ae4eeffefb8659c41b79cff6874e6115, type: 3}
+--- !u!4 &243223069 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6126369721911471145, guid: ae4eeffefb8659c41b79cff6874e6115,
+    type: 3}
+  m_PrefabInstance: {fileID: 34285769}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +319,7 @@ MonoBehaviour:
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -601,6 +680,7 @@ Transform:
   - {fileID: 2147098996}
   - {fileID: 715216935}
   - {fileID: 445173900}
+  - {fileID: 243223069}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1420477833
@@ -616,7 +696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 8
-  maxFlags: 5
+  maxFlags: 6
   maxObstaclePercentage: 0.309
   boxController: {fileID: 454396543}
   gridBuilded: 0
@@ -628,6 +708,7 @@ MonoBehaviour:
   flag: {fileID: 7513945388644072137, guid: e786b0ab61667804a8cb7a58e01e5be4, type: 3}
   floor: {fileID: 7189253505987334625, guid: 3d937e034a2413b49ae8cec88ce3403a, type: 3}
   hole: {fileID: 6207804504057901055, guid: 2a2a4b96c8c9aaf499374995ce09591b, type: 3}
+  border: {fileID: 243223069}
   gridPoints: []
   offsetPosition: 0
   obstacleParent: {fileID: 902773862}
