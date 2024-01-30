@@ -82,8 +82,8 @@ public class GridBuilder : MonoBehaviour
         }
 
         //Setting up Border
-        float borderScale = ((gridSize - 5) * 0.5f) + 1.5f;
-        border.localScale = new Vector3(borderScale, borderScale, 0.5f); //Z axis is up
+        float borderScale = ((gridSize - 5) * 0.5f + 1.5f);
+        border.localScale = new Vector3(borderScale, borderScale * 0.3333f , borderScale); //Z axis is up
         //1st border
         for (int i = 0; i < gridSize; i++)
         {

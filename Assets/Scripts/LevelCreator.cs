@@ -116,6 +116,7 @@ public class LevelCreator : MonoBehaviour
         {
             o.gameObject.SetActive(true);
             o.maxMove = o.GetStartMaxMove();
+            o.PlayAnimation();
             gb.gridPoints[o.gridIndex].obj = o.transform;
             gb.gridPoints[o.gridIndex].isValid = false;
         }

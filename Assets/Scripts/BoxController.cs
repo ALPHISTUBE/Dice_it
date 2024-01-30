@@ -91,6 +91,7 @@ public class BoxController : MonoBehaviour
             foreach (BreakableObstacle o in breakableObstacles)
             {
                 o.maxMove--;
+                o.PlayAnimation();
             }
             StartCoroutine(ResetMove());
             moved = false;
