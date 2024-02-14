@@ -8,7 +8,7 @@ public class LevelCreator : MonoBehaviour
     public BoxController bc;
     public bool levelCreated;
     public int maxMove;
-    private int level;
+    public int level = 0;
     private int levelDifficulty;
     public List<int> moves;
     private int prevMove;
@@ -26,6 +26,7 @@ public class LevelCreator : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        level = 1;
     }
 
     // Start is called before the first frame update
