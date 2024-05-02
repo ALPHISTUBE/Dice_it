@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class GameUIManager : MonoBehaviour
 {
     [Header("Value")]
     [SerializeField] private float offset;
     [SerializeField] private float time;
+    [SerializeField] private BoxController boxController;
 
     [Header("UI Element")]
     [SerializeField] private Transform settingB;
@@ -16,6 +19,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform skipB;
     [SerializeField] private Transform resetB;
     [SerializeField] private TextMeshPro levelText;
+    [SerializeField] private TMP_Dropdown qualitySetting;
+    [SerializeField] private Toggle postEffect;
+    [SerializeField] private Slider music;
+    [SerializeField] private Slider sfx;
 
     [Header("VFX")]
     [SerializeField] private Volume vfx;
@@ -30,7 +37,6 @@ public class UIManager : MonoBehaviour
     public void DoSetting()
     {
         StartCoroutine(SettingAnim());
-        vfx.profile = blur;
         settingUI.SetActive(true);
     }
 
@@ -42,14 +48,42 @@ public class UIManager : MonoBehaviour
 
     public void DoSkip()
     {
+        StartCoroutine(boxController.SkipLevel());
         StartCoroutine(SkipAnim());
     }
 
     public void DoResetLevel()
     {
+        boxController.ResetLevel();
         StartCoroutine(ResetLevelAnim());
     }
 
+    public void DoMainManu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void DoQualityChange()
+    {
+        QualitySettings.SetQualityLevel(qualitySetting.value);
+    }
+
+    public void DoPostEffect()
+    {
+        vfx.enabled = postEffect.isOn;
+    }
+
+    public void DoMusicVolume()
+    {
+
+    }
+
+    public void DoSfxVolume()
+    {
+
+    }
+
+    //Animation
     public IEnumerator SettingAnim()
     {
         settingB.position = Vector3.down * offset + settingB.position;

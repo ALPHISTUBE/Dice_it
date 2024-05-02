@@ -39,6 +39,7 @@ public class LevelCreator : MonoBehaviour
     {
         for (int i = 0; i < maxMove; i++)
         {
+            //Create What moves have to make
             bool moveHasBeenSet = false;
             while(!moveHasBeenSet)
             {
@@ -53,39 +54,43 @@ public class LevelCreator : MonoBehaviour
 
                 if (success)
                 {
-                    if (nextMove == 0)
+                    if (nextMove == 0) //Move to Right
                     {
                         for (int j = 0; j < boxes.Length; j++)
                         {
                             boxes[j].GetComponent<BoxMovement>().GoRight();
                         }
                     }
-                    else if (nextMove == 1)
+                    else if (nextMove == 1) //Move to Down
                     {
                         for (int j = 0; j < boxes.Length; j++)
                         {
                             boxes[j].GetComponent<BoxMovement>().GoDown();
                         }
                     }
-                    else if (nextMove == 2)
+                    else if (nextMove == 2) //Move to Left
                     {
                         for (int j = 0; j < boxes.Length; j++)
                         {
                             boxes[j].GetComponent<BoxMovement>().GoLeft();
                         }
                     }
-                    else if (nextMove == 3)
+                    else if (nextMove == 3) //Move to Up
                     {
                         for (int j = 0; j < boxes.Length; j++)
                         {
                             boxes[j].GetComponent<BoxMovement>().GoUp();
                         }
                     }
+
+                    //Adds move to list
                     moves.Add(nextMove);
                     moveHasBeenSet = true;
                 }
             }            
 
+
+            //Change Box Information
             for (int j = 0; j < boxes.Length; j++)
             {
                 BoxMovement bm = boxes[j].GetComponent<BoxMovement>();
@@ -97,7 +102,7 @@ public class LevelCreator : MonoBehaviour
                 }
             }
 
-
+            //Change Breakable obstacle state
             foreach (BreakableObstacle o in bc.breakableObstacles)
             {
                 o.maxMove--;
@@ -105,6 +110,7 @@ public class LevelCreator : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
 
+        //Reset box to original state
         for (int j = 0; j < boxes.Length; j++)
         {
             BoxMovement bm = boxes[j].GetComponent<BoxMovement>();
@@ -113,6 +119,7 @@ public class LevelCreator : MonoBehaviour
             bm.ResetGridIndex();
         }
 
+        //Reset Breakable Obstacle state
         foreach (BreakableObstacle o in bc.breakableObstacles)
         {
             o.gameObject.SetActive(true);

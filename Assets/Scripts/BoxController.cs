@@ -10,6 +10,7 @@ public class BoxController : MonoBehaviour
     private bool moved;
     public List<BreakableObstacle> breakableObstacles;
     private bool canAllowToMove;
+    private bool playerCanControl;
 
     //Instance
     private GridBuilder gridBuiler;
@@ -19,12 +20,13 @@ public class BoxController : MonoBehaviour
     {
         gridBuiler = GridBuilder.instance;
         canAllowToMove = true;
+        playerCanControl = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!LevelCreator.instance.levelCreated) { return; }
+        if(!LevelCreator.instance.levelCreated && !playerCanControl) { return; }
         //Y for left-right and X for up-down
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -93,7 +95,7 @@ public class BoxController : MonoBehaviour
                 o.maxMove--;
                 o.PlayAnimation();
             }
-            StartCoroutine(ResetMove());
+            StartCoroutine(ResetPermissionToMove());
             moved = false;
         }
     }
@@ -108,10 +110,90 @@ public class BoxController : MonoBehaviour
         }
     }
 
-    //Reset Moving
-    IEnumerator ResetMove()
+    //Reset Moving permission
+    IEnumerator ResetPermissionToMove()
     {
         yield return new WaitForSeconds(0.2f);
         canAllowToMove = true;
+    }
+
+    //Skip Level
+    public IEnumerator SkipLevel()
+    {
+        playerCanControl = false;
+        ResetLevel();
+        List<int> playerMoves = LevelCreator.instance.moves;
+
+        //Move boxes to backward
+        for (int i = 0; i < playerMoves.Count; i++)
+        {
+            if (playerMoves[i] == 0) //Move to Right
+            {
+                for (int j = 0; j < boxes.Count; j++)
+                {
+                    boxes[j].GetComponent<BoxMovement>().GoRight();
+                }
+            }
+            else if (playerMoves[i] == 1) //Move to Down
+            {
+                for (int j = 0; j < boxes.Count; j++)
+                {
+                    boxes[j].GetComponent<BoxMovement>().GoDown();
+                }
+            }
+            else if (playerMoves[i] == 2) //Move to Left
+            {
+                for (int j = 0; j < boxes.Count; j++)
+                {
+                    boxes[j].GetComponent<BoxMovement>().GoLeft();
+                }
+            }
+            else if (playerMoves[i] == 3) //Move to Up
+            {
+                for (int j = 0; j < boxes.Count; j++)
+                {
+                    boxes[j].GetComponent<BoxMovement>().GoUp();
+                }
+            }
+
+            for (int j = 0; j < boxes.Count; j++)
+            {
+                BoxMovement bm = boxes[j].GetComponent<BoxMovement>();
+                bm.ResetHoleInfo();
+                if (!points[bm.gridIndex].hasHole) { points[bm.gridIndex].obj = bm.transform; }
+                if (points[bm.prevGridIndex].obj != null && points[bm.prevGridIndex].obj.tag == "Box" && points[bm.prevGridIndex].obj.GetComponent<BoxMovement>().id == bm.id)
+                {
+                    points[bm.prevGridIndex].obj = null;
+                }
+            }
+
+            foreach (BreakableObstacle o in breakableObstacles)
+            {
+                o.maxMove--;
+                o.PlayAnimation();
+            }
+            StartCoroutine(ResetPermissionToMove());
+
+            yield return new WaitForSeconds(0.2f);
+        }
+    }
+
+    //Reset Level
+    public void ResetLevel()
+    {
+        playerCanControl = false;
+
+        for (int i = 0; i < boxes.Count; i++)
+        {
+            BoxMovement bm = boxes[i].GetComponent<BoxMovement>();
+            bm.ResetGridIndex();
+            bm.ResetBoxPosition();
+        }
+
+        for (int i = 0; i < breakableObstacles.Count; i++)
+        {
+            breakableObstacles[i].ResetBreakableObstacle();
+        }
+        playerCanControl = true;
     }
 }

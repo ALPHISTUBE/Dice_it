@@ -44,6 +44,22 @@ public class BreakableObstacle : MonoBehaviour
         }
     }
 
+
+    //Reset Breakable Obstacle
+    public void ResetBreakableObstacle()
+    {
+        for (int i = 0;i < gpx.Length;i++)
+        {
+            gpx[i].SetActive(false);        
+        }
+
+        maxMove = GetStartMaxMove();
+        PlayAnimation();
+        GridBuilder.instance.gridPoints[gridIndex].obj = transform;
+        GridBuilder.instance.gridPoints[gridIndex].isValid = false;
+    }
+
+
     //Access to value
     public int GetStartMaxMove()
     {

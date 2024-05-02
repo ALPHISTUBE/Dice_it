@@ -50,7 +50,7 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -144,7 +144,7 @@ TextureImporter:
         width: 345
         height: 116
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -165,7 +165,7 @@ TextureImporter:
         width: 364
         height: 116
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -181,12 +181,12 @@ TextureImporter:
       name: ToggleOn
       rect:
         serializedVersion: 2
-        x: 811
-        y: 908
-        width: 135
-        height: 70
+        x: 750
+        y: 919
+        width: 72
+        height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -202,12 +202,12 @@ TextureImporter:
       name: ToggleOff
       rect:
         serializedVersion: 2
-        x: 814
-        y: 833
-        width: 135
-        height: 70
+        x: 832
+        y: 919
+        width: 72
+        height: 74
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -228,7 +228,7 @@ TextureImporter:
         width: 46
         height: 46
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -249,7 +249,7 @@ TextureImporter:
         width: 52
         height: 52
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -270,7 +270,7 @@ TextureImporter:
         width: 534
         height: 44
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -291,7 +291,7 @@ TextureImporter:
         width: 534
         height: 44
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -299,6 +299,342 @@ TextureImporter:
       bones: []
       spriteID: 0a84ecb8b42af3c49a5e26a5017701ca
       internalID: -142767714
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Label
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 626
+        width: 827
+        height: 119
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17379fc4060028941bcaf9a7b7c35698
+      internalID: 1803591827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Dropdown label
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 521
+        width: 293
+        height: 89
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4e7f47482071c34fa75259cc3706510
+      internalID: 836525909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: dropdown icon
+      rect:
+        serializedVersion: 2
+        x: 747
+        y: 799
+        width: 35
+        height: 35
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1b474f6e4e49a34dabe3e04521d78fd
+      internalID: 82104213
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Line_0
+      rect:
+        serializedVersion: 2
+        x: 923
+        y: 940
+        width: 66
+        height: 20
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67561d10b339fd343b7e29daed31fc85
+      internalID: 1587688532
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Boss_level_Button
+      rect:
+        serializedVersion: 2
+        x: 858
+        y: 769
+        width: 114
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6adde42344046be4782c854461e7cab4
+      internalID: -1062042889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Replay_llevel_Button
+      rect:
+        serializedVersion: 2
+        x: 860
+        y: 619
+        width: 120
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 272045984024da6458f580f820450e7f
+      internalID: 360826069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: level_Button
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 486
+        width: 114
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32ec39ebd5f13e640a6fb842e235598c
+      internalID: -143720604
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Locked_Boss_level_Button
+      rect:
+        serializedVersion: 2
+        x: 756
+        y: 340
+        width: 114
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a884cd93a9408444a28f8a3cf1a8d6c
+      internalID: 441355802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Locked_level_Button
+      rect:
+        serializedVersion: 2
+        x: 878
+        y: 341
+        width: 114
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7067d0cad2bb40a45a6317d46137b5a6
+      internalID: -1659666807
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Setting_Button
+      rect:
+        serializedVersion: 2
+        x: 318
+        y: 479
+        width: 120
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f352dfd1d1759f048b9bd45ff9d668ff
+      internalID: -1034696695
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Edit_Button
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 480
+        width: 120
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba13788d81b256d4b92670c7c2df9937
+      internalID: 122713020
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Start_button
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 481
+        width: 278
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d5260d010f481d43a158503af4fa40f
+      internalID: 1951473591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Star_2
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 341
+        width: 182
+        height: 107
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e67fcf52b85989e4695492f2a7a12b5c
+      internalID: -1424999591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Star_3
+      rect:
+        serializedVersion: 2
+        x: 266
+        y: 353
+        width: 189
+        height: 104
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ab6655b93e9a6ae48876b5f489928881
+      internalID: -1395726775
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Star_1
+      rect:
+        serializedVersion: 2
+        x: 552
+        y: 369
+        width: 161
+        height: 94
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2b89512b170f840498ba66d7b15fb780
+      internalID: 2082813349
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Line_3
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 101
+        width: 253
+        height: 222
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb29d754644552949ba4f4d11463538a
+      internalID: 1932910462
       vertices: []
       indices: 
       edges: []
@@ -314,14 +650,30 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Boss_level_Button: -1062042889
+      Dropdown label: 836525909
+      Edit_Button: 122713020
+      Label: 1803591827
+      Line_0: 1587688532
+      Line_3: 1932910462
+      Locked_Boss_level_Button: 441355802
+      Locked_level_Button: -1659666807
       MainManu: 475389277
+      Replay_llevel_Button: 360826069
       Resume: 1506323995
+      Setting_Button: -1034696695
       SliderBG: 1811775454
       SliderFG: -142767714
       SliderHandle: 465228307
       Squre: -1997559781
+      Star_1: 2082813349
+      Star_2: -1424999591
+      Star_3: -1395726775
+      Start_button: 1951473591
       ToggleOff: 2146168686
       ToggleOn: 1823565739
+      dropdown icon: 82104213
+      level_Button: -143720604
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

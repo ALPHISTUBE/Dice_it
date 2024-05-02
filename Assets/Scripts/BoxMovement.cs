@@ -327,6 +327,11 @@ public class BoxMovement : MonoBehaviour
         gridBuilder.gridPoints[gridIndex].obj = transform;
         ResetHoleInfo();
     }
+    //Reset Box Position
+    public void ResetBoxPosition()
+    {
+        pos = new Vector3(GridBuilder.instance.gridPoints[gridIndex].position.x, -0.06f, GridBuilder.instance.gridPoints[gridIndex].position.y);
+    }
     //Function for getting for value
     public void SetStartGridIndex(int i)
     {
